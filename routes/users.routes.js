@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const {
   index,
+  edit,
   update,
   destroy,
   store,
@@ -9,11 +10,7 @@ const {
 const router = Router();
 
 router.get("/", index);
-router.put("/", (req, res) => {
-  res.json({
-    message: "put",
-  });
-});
+router.put("/:id", edit);
 router.post("/", store);
 router.delete("/", destroy);
 router.patch("/", update);
