@@ -1,4 +1,6 @@
 const { response } = require("express");
+const bcryptjs = require("bcryptjs");
+const User = require("../models/user");
 
 const index = (req, res = response) => {
   const { q, nombre = "No nombre", page = 1, limit } = req.query;
@@ -20,12 +22,26 @@ const edit = (req, res = response) => {
   });
 };
 
-const store = (req, res = response) => {
-  const { nombre, edad } = req.body;
+const store = async (req, res = response) => {
+  const { nombre, correo, password, rol } = req.body;
+
+  const user = new User({
+    nombre,
+    correo,
+    password,
+    rol,
+  });
+
+  // TODO: Validar si el correo existe
+
+  //TODO: Encriptar la contraseña
+  const salt = bcryptjs.genSaltSync();
+  user.password = bcryptjs.hashSync(password, salt);
+
+  await user.save();
   res.json({
     message: "Guardando un nuevo usuario",
-    nombre,
-    edad,
+    user,
   });
 };
 

@@ -5,6 +5,7 @@ class Server {
   constructor() {
     this.app = express();
     this.port = process.env.PORT;
+    this.endPointUsers = "/api/users";
     // TODO: Conectar a la base de datos
     this.conectarBaseDatos();
     // TODO: Middleware
@@ -29,7 +30,7 @@ class Server {
   }
 
   routes() {
-    this.app.use("/api/users", require("../routes/users.routes"));
+    this.app.use(this.endPointUsers, require("../routes/users.routes"));
   }
 
   listen() {
