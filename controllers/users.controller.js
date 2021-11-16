@@ -34,6 +34,14 @@ const store = async (req, res = response) => {
 
   // TODO: Validar si el correo existe
 
+  const correExistente = User.findOne({ correo: correo });
+
+  if (correExistente) {
+    return res.status(400).json({
+      message:"El correo ya esta registrado"
+    })
+  }
+
   //TODO: Encriptar la contraseña
   const salt = bcryptjs.genSaltSync();
   user.password = bcryptjs.hashSync(password, salt);
