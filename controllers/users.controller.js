@@ -2,16 +2,11 @@ const { response } = require("express");
 const bcryptjs = require("bcryptjs");
 const User = require("../models/user");
 
-const index = (req, res = response) => {
-  const { q, nombre = "No nombre", page = 1, limit } = req.query;
-
-  res.json({
-    message: "Listado de usuarios de las apllicacion",
-    q,
-    nombre,
-    page,
-    limit,
-  });
+const index = async (req, res = response) => {
+  //const { q, nombre = "No nombre", page = 1, limit } = req.query;
+  const { limite = 5, desde = 0 } = req.query;
+  const usuarios = await User.find().skip(Number(desde)).limit(Number(limite));
+  res.json(usuarios);
 };
 
 const edit = async (req, res = response) => {
