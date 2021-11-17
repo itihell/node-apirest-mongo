@@ -16,7 +16,7 @@ const index = (req, res = response) => {
 
 const edit = async (req, res = response) => {
   const id = req.params.id;
-  const { password, google, correo, ...datos } = req.body;
+  const { _id, password, google, correo, ...datos } = req.body;
 
   if (password) {
     //TODO: Encriptar la contraseña
