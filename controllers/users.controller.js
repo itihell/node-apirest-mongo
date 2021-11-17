@@ -14,11 +14,20 @@ const index = (req, res = response) => {
   });
 };
 
-const edit = (req, res = response) => {
+const edit = async (req, res = response) => {
   const id = req.params.id;
+  const { password, google, correo, ...datos } = req.body;
+
+  if (password) {
+    //TODO: Encriptar la contraseña
+    const salt = bcryptjs.genSaltSync();
+    datos.password = bcryptjs.hashSync(password, salt);
+  }
+  const user = await User.findByIdAndUpdate(id, datos);
+
   res.json({
     message: "Modificar un usuario put",
-    id: id,
+    user,
   });
 };
 
