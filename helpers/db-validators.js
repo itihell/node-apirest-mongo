@@ -6,6 +6,12 @@ const isRolValid = async (rol = "") => {
     throw new Error(`El ${rol} no es valido`);
   }
 };
+const existId = async (id) => {
+  const existId = await user.findById(id);
+  if (!existId) {
+    throw new Error(`El ID: ${id} no es valido`);
+  }
+};
 
 const existEmail = async (correo = "") => {
   // TODO: Validar si el correo existe
@@ -17,4 +23,4 @@ const existEmail = async (correo = "") => {
   }
 };
 
-module.exports = { isRolValid, existEmail };
+module.exports = { isRolValid, existEmail, existId };
