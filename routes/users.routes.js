@@ -7,7 +7,8 @@ const {
   destroy,
   store,
 } = require("../controllers/users.controller");
-const Rol = require("../models/rol");
+const { isRolValid } = require("../helpers/db-validators");
+
 const { validarCampos } = require("../middleware/validar-campos");
 
 const router = Router();
@@ -23,12 +24,7 @@ router.post(
     }),
     check("correo", "El correo no es valido").isEmail(),
     //check("rol", "No es un rol valido").isIn(["ADMIN_ROLE", "USER_ROLE"]),
-    check("rol").custom(async (rol = "") => {
-      const existeRol = await Rol.findOne({ rol });
-      if (!existeRol) {
-        throw new Error(`El ${rol} no es valido`);
-      }
-    }),
+    check("rol").custom((rol) => isRolValid(rol)),
     validarCampos,
   ],
   store
