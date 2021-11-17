@@ -7,7 +7,7 @@ const {
   destroy,
   store,
 } = require("../controllers/users.controller");
-const { isRolValid } = require("../helpers/db-validators");
+const { isRolValid, existEmail } = require("../helpers/db-validators");
 
 const { validarCampos } = require("../middleware/validar-campos");
 
@@ -25,6 +25,7 @@ router.post(
     check("correo", "El correo no es valido").isEmail(),
     //check("rol", "No es un rol valido").isIn(["ADMIN_ROLE", "USER_ROLE"]),
     check("rol").custom((rol) => isRolValid(rol)),
+    check("correo").custom((correo) => existEmail(correo)),
     validarCampos,
   ],
   store
