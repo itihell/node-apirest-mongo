@@ -6,7 +6,16 @@ const index = async (req, res = response) => {
   //const { q, nombre = "No nombre", page = 1, limit } = req.query;
   const { limite = 5, desde = 0 } = req.query;
   const usuarios = await User.find().skip(Number(desde)).limit(Number(limite));
-  res.json(usuarios);
+
+  const total = await User.countDocuments();
+
+  const data = {
+    limite: Number(limite),
+    total,
+    rows: usuarios,
+  };
+
+  res.json(data);
 };
 
 const edit = async (req, res = response) => {
