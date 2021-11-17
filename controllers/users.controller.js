@@ -5,16 +5,16 @@ const User = require("../models/user");
 const index = async (req, res = response) => {
   //const { q, nombre = "No nombre", page = 1, limit } = req.query;
   const { limite = 5, desde = 0 } = req.query;
-  const usuarios = await User.find({ estado: true })
-    .skip(Number(desde))
-    .limit(Number(limite));
+  const query = { estado: true };
 
-  const total = await User.countDocuments();
+  const [total, rows] = await Promise.all([
+    User.countDocuments(query),
+    User.find(query).skip(Number(desde)).limit(Number(limite)),
+  ]);
 
   const data = {
-    limite: Number(limite),
     total,
-    rows: usuarios,
+    rows,
   };
 
   res.json(data);
